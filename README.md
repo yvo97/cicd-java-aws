@@ -17,9 +17,10 @@ Sources accompagnant le cours "Continuous Integration, Continuous Delivery"
     sudo yum -y install epel-release java-11-openjdk-devel
     sudo vim ~/.bashrc
 
-> Editer le fichier **~/.bashrc** et y ajouter le contenu ci-dessous
 > 
-> ``` export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.19.0.7-1.el7_9.x86_64 ```
+> Editer le fichier **vim ~/.bashrc** et y ajouter le contenu ci-dessous
+> 
+> ``` export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.20.0.8-1.el7_9.x86_64 ```
 > 
 > ```export PATH=$PATH:$JAVA_HOME/bin ``` 
 
