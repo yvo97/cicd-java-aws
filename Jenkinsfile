@@ -55,9 +55,8 @@ node {
             }
         }
 
-    } finally {
-        deleteDir()
-        sendEmail(EMAIL_RECIPIENTS);
+    
+    
     }
 
 }
@@ -109,9 +108,5 @@ String getHTTPPort(String branchName) {
     return (branchName == 'ready') ? '8888' : '8090'
 }
 
-String getTag(String buildNumber, String branchName) {
-    if (branchName == 'main') {
-        return buildNumber + '-stable'
-    }
-    return buildNumber + '-unstable'
-}
+
+
