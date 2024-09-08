@@ -17,6 +17,12 @@ node {
             checkout scm
         }
 
+        stage('Clean Workspace') {
+    steps {
+        cleanWs()
+          }
+     }
+
         stage('Build with test') {
 
             sh "mvn clean install"
