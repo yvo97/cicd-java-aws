@@ -57,9 +57,7 @@ node {
             }
         }
 
-    } finally {
-        deleteDir()
-        sendEmail(EMAIL_RECIPIENTS);
+   
     }
 
 }
