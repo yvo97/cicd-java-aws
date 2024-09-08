@@ -2,7 +2,7 @@ def CONTAINER_NAME = "calculator"
 def ENV_NAME = getEnvName(env.BRANCH_NAME)
 def CONTAINER_TAG = getTag(env.BUILD_NUMBER, env.BRANCH_NAME)
 def HTTP_PORT = getHTTPPort(env.BRANCH_NAME)
-def EMAIL_RECIPIENTS = "philippe.guemkamsimo@gmail.com"
+def EMAIL_RECIPIENTS = "tekamyvan93@gmail.com"
 
 
 node {
@@ -57,9 +57,9 @@ node {
             }
         }
 
-    } catch (ignored) {
+    } finally {
         deleteDir()
-
+        sendEmail(EMAIL_RECIPIENTS);
     }
 
 }
@@ -90,7 +90,12 @@ def runApp(containerName, tag, dockerHubUser, httpPort, envName) {
     echo "Application started on port: ${httpPort} (http)"
 }
 
-
+def sendEmail(recipients) {
+    mail(
+            to: recipients,
+            subject: "Build ${env.BUILD_NUMBER} - ${currentBuild.currentResult} - (${currentBuild.fullDisplayName})",
+            body: "Check console output at: ${env.BUILD_URL}/console" + "\n")
+}
 
 String getEnvName(String branchName) {
     if (branchName == 'main') {
