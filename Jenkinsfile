@@ -24,9 +24,8 @@ node {
             sh "mvn clean install -Dmaven.test.skip=true"
         }
 
-        
-            }
-        }
+
+
 
         stage("Image Prune") {
             imagePrune(CONTAINER_NAME)
@@ -53,6 +52,7 @@ node {
         deleteDir()
         sendEmail(EMAIL_RECIPIENTS);
     }
+
 
 }
 
