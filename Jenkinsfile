@@ -2,6 +2,7 @@ def CONTAINER_NAME = "calculator"
 def ENV_NAME = getEnvName(env.BRANCH_NAME)
 def CONTAINER_TAG = getTag(env.BUILD_NUMBER, env.BRANCH_NAME)
 def HTTP_PORT = getHTTPPort(env.BRANCH_NAME)
+def EMAIL_RECIPIENTS = "philippe.guemkamsimo@gmail.com"
 
 
 node {
@@ -42,20 +43,21 @@ node {
         }
 
         stage('Push to Docker Registry') {
-            withCredentials([usernamePassword(credentialsId: 'dockercredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            withCredentials([usernamePassword(credentialsId: 'DockerhubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
             }
         }
 
         stage('Run App') {
-            withCredentials([usernamePassword(credentialsId: 'dockercredential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            withCredentials([usernamePassword(credentialsId: 'DockerhubCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 runApp(CONTAINER_NAME, CONTAINER_TAG, USERNAME, HTTP_PORT, ENV_NAME)
 
             }
         }
 
-    
-    
+    } finally {
+        deleteDir()
+        sendEmail(EMAIL_RECIPIENTS);
     }
 
 }
@@ -107,5 +109,9 @@ String getHTTPPort(String branchName) {
     return (branchName == 'ready') ? '8888' : '8090'
 }
 
-
-
+String getTag(String buildNumber, String branchName) {
+    if (branchName == 'main') {
+        return buildNumber + '-stable'
+    }
+    return buildNumber + '-unstable'
+}
